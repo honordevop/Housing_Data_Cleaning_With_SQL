@@ -82,3 +82,23 @@ SELECT
 SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress)-1) AS address,
 SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress)+1, LEN(PropertyAddress)) AS address
 FROM [ProjectPortfolio].[dbo].[NashvilleHousing];
+
+--Create a new column for splitted address
+ALTER TABLE NashvilleHousing
+ADD PropertySplitAddress Nvarchar(255);
+
+--Update created PropertySplitAddress column
+UPDATE NashvilleHousing
+SET PropertySplitAddress = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress)-1)
+
+--Create a new column for splitted city from address
+ALTER TABLE NashvilleHousing
+ADD PropertySplitCity Nvarchar(255);
+
+--Update created PropertySplitCity column
+UPDATE NashvilleHousing
+SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress)+1, LEN(PropertyAddress))
+
+--View the newly populated columns
+SELECT PropertySplitAddress, PropertySplitCity 
+FROM [ProjectPortfolio].[dbo].[NashvilleHousing];
