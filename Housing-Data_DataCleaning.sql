@@ -63,3 +63,22 @@ JOIN [ProjectPortfolio].[dbo].[NashvilleHousing] b
 	ON a.ParcelID = b.ParcelID
 	AND a.[UniqueID ] <> b.[UniqueID ]
 WHERE a.PropertyAddress is null;
+
+--Break out Address into individual Columns (Address, City, State)
+
+SELECT PropertyAddress
+FROM [ProjectPortfolio].[dbo].[NashvilleHousing]
+--WHERE PropertyAddress is null;
+
+
+SELECT LEFT(PropertyAddress, (CHARINDEX(',', PropertyAddress)-1)) AS address1, 
+RIGHT(PropertyAddress, LEN(PropertyAddress)-CHARINDEX(',', PropertyAddress)) AS address2
+FROM [ProjectPortfolio].[dbo].[NashvilleHousing]
+--WHERE PropertyAddress is null;
+
+
+--Alternative way to achieve same result as obtained above
+SELECT 
+SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress)-1) AS address,
+SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress)+1, LEN(PropertyAddress)) AS address
+FROM [ProjectPortfolio].[dbo].[NashvilleHousing];
