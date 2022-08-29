@@ -40,3 +40,26 @@ ALTER COLUMN SaleDate DATE;
 --View the SaleDate column as altered
 Select Saledate
 FROM [ProjectPortfolio].[dbo].[NashvilleHousing];
+
+
+--Populate NULL values in PropertyAddress Column
+SELECT *
+FROM [ProjectPortfolio].[dbo].[NashvilleHousing]
+WHERE PropertyAddress is null;
+
+
+SELECT a.ParcelID, a.PropertyAddress, b.ParcelID, b.PropertyAddress, ISNULL(a.PropertyAddress, b.PropertyAddress)
+FROM [ProjectPortfolio].[dbo].[NashvilleHousing] a
+JOIN [ProjectPortfolio].[dbo].[NashvilleHousing] b
+	ON a.ParcelID = b.ParcelID
+	AND a.[UniqueID ] <> b.[UniqueID ]
+WHERE a.PropertyAddress is null;
+
+
+UPDATE a
+SET PropertyAddress = ISNULL(a.PropertyAddress, b.PropertyAddress)
+FROM [ProjectPortfolio].[dbo].[NashvilleHousing] a
+JOIN [ProjectPortfolio].[dbo].[NashvilleHousing] b
+	ON a.ParcelID = b.ParcelID
+	AND a.[UniqueID ] <> b.[UniqueID ]
+WHERE a.PropertyAddress is null;
